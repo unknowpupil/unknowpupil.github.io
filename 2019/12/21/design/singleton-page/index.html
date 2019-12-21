@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="设计模式," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="单例模式懒汉模式 延迟加载，只有正真使用的时候才进行初始化   线程安全问题 double check 加锁优化 编译器（JIT），CPU 有可能对指令进行重排序，导致使用到尚未初始化的实例，可以通过volatile 关键字进行修饰，对于volatile修饰的字段，可以防止指令重排序  字节码底层&#x2F;&#x2F; 但是会通过  JIT ,CPU 等 即时编译使得2 3步发生变化单线程下没有问题，多线程下可能会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单例模式">
+<meta property="og:url" content="http://yoursite.com/2019/12/21/design/singleton-page/index.html">
+<meta property="og:site_name" content="unknowpupil">
+<meta property="og:description" content="单例模式懒汉模式 延迟加载，只有正真使用的时候才进行初始化   线程安全问题 double check 加锁优化 编译器（JIT），CPU 有可能对指令进行重排序，导致使用到尚未初始化的实例，可以通过volatile 关键字进行修饰，对于volatile修饰的字段，可以防止指令重排序  字节码底层&#x2F;&#x2F; 但是会通过  JIT ,CPU 等 即时编译使得2 3步发生变化单线程下没有问题，多线程下可能会">
+<meta property="article:published_time" content="2019-12-21T12:58:31.000Z">
+<meta property="article:modified_time" content="2019-12-21T13:20:26.092Z">
+<meta property="article:author" content="w10g">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/21/design/singleton-page/"/>
+
+
+
+
+
+  <title>单例模式 | unknowpupil</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">unknowpupil</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不知名小学生</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/21/design/singleton-page/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="w10g">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="unknowpupil">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">单例模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-21T20:58:31+08:00">
+                2019-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><h3 id="懒汉模式"><a href="#懒汉模式" class="headerlink" title="懒汉模式"></a>懒汉模式</h3><blockquote>
+<p>延迟加载，只有正真使用的时候才进行初始化</p>
+</blockquote>
+<ul>
+<li>线程安全问题</li>
+<li>double check 加锁优化</li>
+<li>编译器（JIT），CPU 有可能对指令进行重排序，导致使用到尚未初始化的实例，可以通过volatile 关键字进行修饰，对于volatile修饰的字段，可以防止指令重排序</li>
+</ul>
+<p>字节码底层<br>// 但是会通过  JIT ,CPU 等 即时编译使得2 3步发生变化<br>单线程下没有问题，多线程下可能会出现空指针异常，<br>volatile ： 可见的 使得关于此空间的字节码不会发生重排序<br>1 分配空间<br>2 初始化<br>3 引用赋值 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LazySingleton</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> LazySingleton instance;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">LazySingleton</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LazySingleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">200</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;  <span class="comment">//双重锁机制</span></span><br><span class="line">        <span class="keyword">if</span>(instance==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (LazySingleton<span class="class">.<span class="keyword">class</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(instance==<span class="keyword">null</span>)&#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> LazySingleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="饿汉模式"><a href="#饿汉模式" class="headerlink" title="饿汉模式"></a>饿汉模式</h3><blockquote>
+<p>类加载的初始化阶段就完成了实例化的初始化，本质上就是借助JVM类加载机制，保证实例的唯一性</p>
+</blockquote>
+<ul>
+<li>类加载过程<ul>
+<li>加载二进制数据到内存钟，生成对应的Class数据结构，</li>
+<li>连接 a.验证， b.准备 （给类的静态成员变量赋默认值）c.解析</li>
+<li>初始化： 给类的静态变量赋初值<br>只有在真正的使用对应类时，才会触发初始化如（当前类时启动类即mainh函数所在类，直接进行new操作，访问静态属性，访问今天方法，用反射访问类，初始化一个类的子类等</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HungrySingleton</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> HungrySingleton instance = <span class="keyword">new</span> HungrySingleton();</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">HungrySingleton</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HungrySingleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="静态内部类实现单例"><a href="#静态内部类实现单例" class="headerlink" title="静态内部类实现单例"></a>静态内部类实现单例</h3><ul>
+<li>本质上是利用类加载机制来实现线程安全</li>
+<li>只有实际使用的时候才会触发类的初始化，也是懒加载的一种形式</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//也是依赖jvm加载机制实现实例的唯一型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InnerClassSingleton</span></span>&#123;</span><br><span class="line">    <span class="comment">//懒加载方式 不主动使用这个就不会加载这个实例</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">InnerClassHolder</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> InnerClassSingleton instance= <span class="keyword">new</span> InnerClassSingleton();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">InnerClassSingleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">           <span class="keyword">if</span>(InnerClassHolder.instance !=<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"单例不运行多个实例访问"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  InnerClassSingleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// 调用 getInstance 进行返回InnerClassHolder.instance的时候才会调用InnerClassHolder今天内部类的初始化才会导致InnerClassSingleton的初始化</span></span><br><span class="line">        <span class="keyword">return</span> InnerClassHolder.instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="反射攻击实例"><a href="#反射攻击实例" class="headerlink" title="反射攻击实例"></a>反射攻击实例</h3><blockquote>
+<p>反射获取实例对单例的破坏，，饿汉模式可以防止这总攻击查看上诉代码，懒汉模式没办法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">//问题：可以用反射机制来直接获取实例，导致单例实例不唯一</span></span><br><span class="line"><span class="comment">//       </span></span><br><span class="line"><span class="comment">//拿到构造函数</span></span><br><span class="line">Constructor&lt;InnerClassSingleton&gt; decl</span><br><span class="line">        Constructor&lt;InnerClassSingleton&gt; declaredConstructor = InnerClassSingleton<span class="class">.<span class="keyword">class</span>.<span class="title">getDeclaredConstructor</span>()</span>;</span><br><span class="line"><span class="comment">//拿到访问权， private就没用了</span></span><br><span class="line">declaredConstructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">InnerClassSingleton innerClassSingleton = declaredConstructor.newInstance();</span><br><span class="line">InnerClassSingleton instance = InnerClassSingleton.getInstance();</span><br><span class="line">System.out.println(innerClassSingleton==instance);<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="枚举式"><a href="#枚举式" class="headerlink" title="枚举式"></a>枚举式</h3><blockquote>
+<p>枚举类型可以防止反射机制获取实例详情看源码  –<strong>枚举类型不需要加任何东西都可以实现序列号和反序列化</strong>– 查看类编译之后字节码详情<code>javap -v -p EnumSingleton.class</code> 后去枚举的构造函数需要传两个值，用枚举实现的单例式线程安全的可以防止反射攻击</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span>  EnumSingleton &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="keyword">this</span>.hashCode());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EnumTest</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        EnumSingleton instance = EnumSingleton.INSTANCE;</span><br><span class="line">        EnumSingleton instance2 = EnumSingleton.INSTANCE;</span><br><span class="line">        System.out.println(instance==instance2);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//反射获取 实例</span></span><br><span class="line">         Constructor&lt;EnumSingleton&gt; declaredConstructor = EnumSingleton<span class="class">.<span class="keyword">class</span>.<span class="title">getDeclaredConstructor</span>(<span class="title">String</span>.<span class="title">class</span>,<span class="title">int</span>.<span class="title">class</span>)</span>;</span><br><span class="line">         declaredConstructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">         EnumSingleton instance = declaredConstructor.newInstance(<span class="string">"INSTANCE"</span>, <span class="number">0</span>);</span><br><span class="line">         <span class="comment">//报错java.lang.IllegalArgumentException:  Cannot reflectively create enum objects</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="序列化式"><a href="#序列化式" class="headerlink" title="序列化式"></a>序列化式</h3><blockquote>
+<p>加入开发一款游戏，需要游戏能够存盘，能够在网络中进行传输，数据需要存储在redis等实现持久化网络传输就需要对应的类可序列化，jvm才会进行对应处理   </p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InerClassSingletonTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">        InnerClassSingleton instance = InnerClassSingleton.getInstance();</span><br><span class="line"><span class="comment">//        System.out.println(innerClassSingleton==instance);</span></span><br><span class="line"><span class="comment">//把这个东西存到磁盘中去</span></span><br><span class="line"><span class="comment">//        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("testSerializable"));</span></span><br><span class="line"><span class="comment">//        //反序列化方式获取</span></span><br><span class="line"><span class="comment">//        oos.writeObject(instance);</span></span><br><span class="line"><span class="comment">//        oos.close();</span></span><br><span class="line">        <span class="comment">//把这个testSerializable反序列化出来</span></span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">"testSerializable"</span>));</span><br><span class="line">        InnerClassSingleton object = ((InnerClassSingleton) ois.readObject());</span><br><span class="line">        System.out.println(instance==object);</span><br><span class="line">        <span class="comment">// false 原因是 通过反序列化的机制创建对象的时候不会直接去调用自己定义的构造函数</span></span><br><span class="line">        <span class="comment">// 他又自己的序列化机制直接从字节流里拿数据进行初始化 这是jvm序列号机制</span></span><br><span class="line">        <span class="comment">//Classes that need to designate a replacement when an instance of it</span></span><br><span class="line">        <span class="comment">// * is read from the stream should implement this special method with the</span></span><br><span class="line">        <span class="comment">/* * exact signature.这个是说实例是从流里读取的，你可以指定一个代替方案来替代从流里面获取对应实例的数据</span></span><br><span class="line"><span class="comment">       * &lt;PRE&gt; 具体做法</span></span><br><span class="line"><span class="comment">       * ANY-ACCESS-MODIFIER Object readResolve() throws ObjectStreamException;</span></span><br><span class="line"><span class="comment">       * &lt;/PRE&gt;&lt;p&gt;</span></span><br><span class="line"><span class="comment">       **/</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这个类要进行网路传输，就需要进行序列号Serializable 这样这个类具备了反序列化的功能</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InnerClassSingleton</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">42L</span>;</span><br><span class="line">    <span class="comment">// Serializable 相当于标记，可开启序列号功能</span></span><br><span class="line">    <span class="comment">//懒加载方式 不主动使用这个就不会加载这个实例</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">InnerClassHolder</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> InnerClassSingleton instance= <span class="keyword">new</span> InnerClassSingleton();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">InnerClassSingleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(InnerClassHolder.instance !=<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"单例不运行多个实例访问"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  InnerClassSingleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 调用 getInstance 进行返回InnerClassHolder.instance的时候才会调用InnerClassHolder今天内部类的初始化才会导致InnerClassSingleton的初始化</span></span><br><span class="line">        <span class="keyword">return</span> InnerClassHolder.instance;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">Object <span class="title">readResolve</span><span class="params">()</span> <span class="keyword">throws</span> ObjectStreamException</span>&#123;</span><br><span class="line">        <span class="comment">//自己指定返回数据</span></span><br><span class="line">        <span class="keyword">return</span> InnerClassHolder.instance;</span><br><span class="line">        <span class="comment">// 报错 java.io.InvalidClassException: com.unknowpupil.design.innerclasssingleton.InnerClassSingleton; local class incompatible: stream classdesc serialVersionUID = -7093768267637209374, local class serialVersionUID = 42</span></span><br><span class="line">        <span class="comment">// 说明是版本号不符合 第一次实例化的时候并没有加版本号 如果我们喜欢序列号的class是兼容的化就需要加入版本号。</span></span><br><span class="line">        <span class="comment">// 不能随意修改 ，如果不加，会自动给你生成，下次反序列化如果代码动了，版本号不符合就会出错</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="源码中的应用"><a href="#源码中的应用" class="headerlink" title="源码中的应用"></a>源码中的应用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//spring jdk</span></span><br><span class="line">java.lang.Runtime</span><br><span class="line">org.springfrmework.aop.framework.proxyFactoryBean</span><br><span class="line">org.springfrmework.beans.factory.support.DefaultSingletonBeanRegistry</span><br><span class="line">org.springframework.core.ReactiveAdapterRegistry</span><br><span class="line"><span class="comment">//Tomcat</span></span><br><span class="line">org.apache.catalina.webresources.TomcatURLStreamHandlerFactory</span><br><span class="line"><span class="comment">//反序列化指定数据源</span></span><br><span class="line">java.util.Currency</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/21/hello-world/" rel="next" title="Hexo基本操作">
+                <i class="fa fa-chevron-left"></i> Hexo基本操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/21/singleton/singleton-page/" rel="prev" title="单一职责原则">
+                单一职责原则 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">w10g</p>
+              <p class="site-description motion-element" itemprop="description">好好学习，用知识武装自己</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#单例模式"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#懒汉模式"><span class="nav-number">1.0.1.</span> <span class="nav-text">懒汉模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#饿汉模式"><span class="nav-number">1.0.2.</span> <span class="nav-text">饿汉模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态内部类实现单例"><span class="nav-number">1.0.3.</span> <span class="nav-text">静态内部类实现单例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反射攻击实例"><span class="nav-number">1.0.4.</span> <span class="nav-text">反射攻击实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举式"><span class="nav-number">1.0.5.</span> <span class="nav-text">枚举式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化式"><span class="nav-number">1.0.6.</span> <span class="nav-text">序列化式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码中的应用"><span class="nav-number">1.0.7.</span> <span class="nav-text">源码中的应用</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">w10g</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
