@@ -81,12 +81,12 @@
 
 <meta name="description" content="单例模式懒汉模式 延迟加载，只有正真使用的时候才进行初始化   线程安全问题 double check 加锁优化 编译器（JIT），CPU 有可能对指令进行重排序，导致使用到尚未初始化的实例，可以通过volatile 关键字进行修饰，对于volatile修饰的字段，可以防止指令重排序  字节码底层&#x2F;&#x2F; 但是会通过  JIT ,CPU 等 即时编译使得2 3步发生变化单线程下没有问题，多线程下可能会">
 <meta property="og:type" content="article">
-<meta property="og:title" content="单例模式">
+<meta property="og:title" content="设计模式之单例模式">
 <meta property="og:url" content="http://yoursite.com/2019/12/21/design/singleton-page/index.html">
 <meta property="og:site_name" content="unknowpupil">
 <meta property="og:description" content="单例模式懒汉模式 延迟加载，只有正真使用的时候才进行初始化   线程安全问题 double check 加锁优化 编译器（JIT），CPU 有可能对指令进行重排序，导致使用到尚未初始化的实例，可以通过volatile 关键字进行修饰，对于volatile修饰的字段，可以防止指令重排序  字节码底层&#x2F;&#x2F; 但是会通过  JIT ,CPU 等 即时编译使得2 3步发生变化单线程下没有问题，多线程下可能会">
 <meta property="article:published_time" content="2019-12-21T12:58:31.000Z">
-<meta property="article:modified_time" content="2019-12-21T13:20:26.092Z">
+<meta property="article:modified_time" content="2019-12-28T14:48:23.977Z">
 <meta property="article:author" content="w10g">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
@@ -125,7 +125,7 @@
 
 
 
-  <title>单例模式 | unknowpupil</title>
+  <title>设计模式之单例模式 | unknowpupil</title>
   
 
 
@@ -269,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">单例模式</h1>
+          <h1 class="post-title" itemprop="name headline">设计模式之单例模式</h1>
         
 
         <div class="post-meta">
@@ -415,8 +415,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/21/singleton/singleton-page/" rel="next" title="单一职责原则">
-                <i class="fa fa-chevron-left"></i> 单一职责原则
+              <a href="/2019/12/21/hello-world/" rel="next" title="Hexo基本操作">
+                <i class="fa fa-chevron-left"></i> Hexo基本操作
               </a>
             
           </div>
@@ -424,6 +424,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/21/principle/singleton-page/" rel="prev" title="设计原则之单一职责原则">
+                设计原则之单一职责原则 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -500,7 +504,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -511,7 +515,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -522,7 +526,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
