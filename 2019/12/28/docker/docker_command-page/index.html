@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="unknowpupil">
 <meta property="og:description" content="查看Doucker 版本1docker version  从Doucker 文件构建Docker 映像1docker build -t image-name docker-file-location  查看可用的Docker 映像1docker images  查看最近运行的容器1docker ps -I  运行 Docker 映像1docker version  查看所有正在运行的容器1dock">
 <meta property="article:published_time" content="2019-12-28T13:58:31.000Z">
-<meta property="article:modified_time" content="2019-12-28T15:10:23.544Z">
+<meta property="article:modified_time" content="2020-01-02T05:42:27.335Z">
 <meta property="article:author" content="w10g">
 <meta property="article:tag" content="Docker容器">
 <meta name="twitter:card" content="summary">
@@ -367,7 +367,8 @@
 
 <h3 id="删除所有未关联的数据卷"><a href="#删除所有未关联的数据卷" class="headerlink" title="删除所有未关联的数据卷"></a>删除所有未关联的数据卷</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume rm $(docker volume ls -qf dangling&#x3D;true)</span><br></pre></td></tr></table></figure>
 <h3 id="从主机复制文件到容器"><a href="#从主机复制文件到容器" class="headerlink" title="从主机复制文件到容器"></a>从主机复制文件到容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker cp host_path containerID:container_path</span><br></pre></td></tr></table></figure>
-<h3 id="从容器复制文件到主机"><a href="#从容器复制文件到主机" class="headerlink" title="从容器复制文件到主机"></a>从容器复制文件到主机</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker cp containerID:container_path host_path</span><br></pre></td></tr></table></figure>
+<h3 id="从容器复制文件到主机"><a href="#从容器复制文件到主机" class="headerlink" title="从容器复制文件到主机"></a>从容器复制文件到主机</h3><p>192.30.252.154<br>192.30.252.153</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker cp containerID:container_path host_path</span><br></pre></td></tr></table></figure>
       
     </div>
     
