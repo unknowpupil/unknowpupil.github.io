@@ -79,14 +79,14 @@
 
 
 
-<meta name="description" content="1234567891011121314151617每隔5秒执行一次：*&#x2F;5 * * * * ?每隔1分钟执行一次：0 *&#x2F;1 * * * ?每天23点执行一次：0 0 23 * * ?每天凌晨1点执行一次：0 0 1 * * ?每月1号凌晨1点执行一次：0 0 1 1 * ?每月最后一天23点执行一次：0 0 23 L * ?每周星期天凌晨1点实行一次：0 0 1 ? * L在">
+<meta name="description" content="Cron 表达式 Cron表达式由7个部分组成，各部分用空格隔开，例如0 0 12 ? * WED（每星期三下午12:00 执行） Cron表达式的7个部分从左到右代表的含义如下Seconds Minutes Hours Day-of-Month Month Day-of-Week Year&#96;&#96;其中Year是可选的  Cron表达式范例12345678910111213141516171819*&#x2F;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Cron表达式范例">
+<meta property="og:title" content="七子表达式">
 <meta property="og:url" content="http://yoursite.com/2019/12/21/corn/corn_page/index.html">
 <meta property="og:site_name" content="unknowpupil">
-<meta property="og:description" content="1234567891011121314151617每隔5秒执行一次：*&#x2F;5 * * * * ?每隔1分钟执行一次：0 *&#x2F;1 * * * ?每天23点执行一次：0 0 23 * * ?每天凌晨1点执行一次：0 0 1 * * ?每月1号凌晨1点执行一次：0 0 1 1 * ?每月最后一天23点执行一次：0 0 23 L * ?每周星期天凌晨1点实行一次：0 0 1 ? * L在">
+<meta property="og:description" content="Cron 表达式 Cron表达式由7个部分组成，各部分用空格隔开，例如0 0 12 ? * WED（每星期三下午12:00 执行） Cron表达式的7个部分从左到右代表的含义如下Seconds Minutes Hours Day-of-Month Month Day-of-Week Year&#96;&#96;其中Year是可选的  Cron表达式范例12345678910111213141516171819*&#x2F;">
 <meta property="article:published_time" content="2019-12-21T12:58:31.000Z">
-<meta property="article:modified_time" content="2020-01-07T06:26:08.694Z">
+<meta property="article:modified_time" content="2020-01-07T06:33:47.696Z">
 <meta property="article:author" content="w10g">
 <meta property="article:tag" content="定时任务">
 <meta name="twitter:card" content="summary">
@@ -125,7 +125,7 @@
 
 
 
-  <title>Cron表达式范例 | unknowpupil</title>
+  <title>七子表达式 | unknowpupil</title>
   
 
 
@@ -269,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Cron表达式范例</h1>
+          <h1 class="post-title" itemprop="name headline">七子表达式</h1>
         
 
         <div class="post-meta">
@@ -341,7 +341,26 @@
       
 
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">每隔5秒执行一次：*&#x2F;5 * * * * ?</span><br><span class="line"></span><br><span class="line">每隔1分钟执行一次：0 *&#x2F;1 * * * ?</span><br><span class="line"></span><br><span class="line">每天23点执行一次：0 0 23 * * ?</span><br><span class="line"></span><br><span class="line">每天凌晨1点执行一次：0 0 1 * * ?</span><br><span class="line"></span><br><span class="line">每月1号凌晨1点执行一次：0 0 1 1 * ?</span><br><span class="line"></span><br><span class="line">每月最后一天23点执行一次：0 0 23 L * ?</span><br><span class="line"></span><br><span class="line">每周星期天凌晨1点实行一次：0 0 1 ? * L</span><br><span class="line"></span><br><span class="line">在26分、29分、33分执行一次：0 26,29,33 * * * ?</span><br><span class="line"></span><br><span class="line">每天的0点、13点、18点、21点都执行一次：0 0 0,13,18,21 * * ?</span><br></pre></td></tr></table></figure>
+        <h3 id="Cron-表达式"><a href="#Cron-表达式" class="headerlink" title="Cron 表达式"></a>Cron 表达式</h3><blockquote>
+<p>Cron表达式由7个部分组成，各部分用空格隔开，例如<code>0 0 12 ? * WED（每星期三下午12:00 执行）
+Cron表达式的7个部分从左到右代表的含义如下</code>Seconds Minutes Hours Day-of-Month Month Day-of-Week Year``<br>其中Year是可选的</p>
+</blockquote>
+<h3 id="Cron表达式范例"><a href="#Cron表达式范例" class="headerlink" title="Cron表达式范例"></a>Cron表达式范例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">*/<span class="number">5</span> * * * * ?  每隔<span class="number">5</span>秒执行一次</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> */<span class="number">1</span> * * * ?  每隔<span class="number">1</span>分钟执行一次</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">23</span> * * ?  每天<span class="number">23</span>点执行一次</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">1</span> * * ?  每天凌晨<span class="number">1</span>点执行一次</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> * ?  每月<span class="number">1</span>号凌晨<span class="number">1</span>点执行一次</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">23</span> L * ?  每月最后一天<span class="number">23</span>点执行一次</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">1</span> ? * L  每周星期天凌晨<span class="number">1</span>点实行一次</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> <span class="number">26</span>,<span class="number">29</span>,<span class="number">33</span> * * * ?  在<span class="number">26</span>分、<span class="number">29</span>分、<span class="number">33</span>分执行一次</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span>,<span class="number">13</span>,<span class="number">18</span>,<span class="number">21</span> * * ? 每天的<span class="number">0</span>点、<span class="number">13</span>点、<span class="number">18</span>点、<span class="number">21</span>点都执行一次</span><br><span class="line"> </span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span> */<span class="number">1</span> * ? 每天<span class="number">00</span>：<span class="number">00</span>点执行 每天<span class="number">00</span>：<span class="number">00</span>点执行执行一次</span><br></pre></td></tr></table></figure>
+
+<h3 id="Cron表达式可选的值"><a href="#Cron表达式可选的值" class="headerlink" title="Cron表达式可选的值"></a>Cron表达式可选的值</h3><p><strong>Seconds</strong><br>秒：数字0－59</p>
+<p><strong>Minutes</strong><br>分：数字0－59</p>
+<p><strong>Hours</strong><br>时 ：数字0-23</p>
+<p><strong>Day-of-Month</strong><br>月中的几号 ：可以用数字1-31 中的任一一个值，但要注意一些特别的月份</p>
+<p><strong>Month</strong><br>一年中的几月：可以用0-11 或用字符串 “JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV and DEC” 表示</p>
+<p><strong>Day-of-Week</strong><br>每周：数字1-7（1 ＝ 星期日），或用字符口串“SUN, MON, TUE, WED, THU, FRI and SAT”</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">字段名                 允许的值                        允许的特殊字符  </span><br><span class="line">秒                    <span class="number">0</span>-<span class="number">59</span>                            , - * /  </span><br><span class="line">分                    <span class="number">0</span>-<span class="number">59</span>                            , - * /  </span><br><span class="line">小时                  <span class="number">0</span>-<span class="number">23</span>                            , - * /  </span><br><span class="line">日                    <span class="number">1</span>-<span class="number">31</span>                            , - * ? / L W C  </span><br><span class="line">月                    <span class="number">1</span>-<span class="number">12</span> or JAN-DEC                 , - * /  </span><br><span class="line">周几                  1-7 or SUN-SAT                   , - * ? / L C #  </span><br><span class="line">年 (可选字段)          empty, <span class="number">1970</span>-<span class="number">2099</span>                 , - * /</span><br></pre></td></tr></table></figure>
+
+<h3 id="Cron中的符号"><a href="#Cron中的符号" class="headerlink" title="Cron中的符号"></a>Cron中的符号</h3><blockquote>
+</blockquote>
+<ul>
+<li>：代表整个时间段.<br>/ ：表示每多长时间执行一次<br>0/15表示每隔15分钟执行一次,“0”表示为从“0”分开始；<br>3/20表示每隔20分钟执行一次，“3”表示从第3分钟开始执行<br>? ：表示每月的某一天，或第几周的某一天<br>L ：<br>“6L”表示“每月的最后一个星期五”<br>W：表示为最近工作日<br>如“15W”放在每月（day-of-month）字段上表示为“到本月15日最近的工作日”<br>#：是用来指定“的”每月第n个工作日<br>“6#3”或者”FRI#3”:在每周（day-of-week）中表示“每月第三个星期五”<br>问号(?)就是用来对日期和星期字段做互斥的，问号(?)的作用是指明该字段‘没有特定的值’，星号(<em>)和其它值，比如数字，都是给该字段指明特定的值，而星号(</em>)代表所有，在天时表示每一天。<br>“?”字符：表示不确定的值<br>“,”字符：指定数个值<br>“-”字符：指定一个值的范围<br>“/”字符：指定一个值的增加幅度。n/m表示从n开始，每次增加m<br>“L”字符：用在日表示一个月中的最后一天，用在周表示该月最后一个星期X<br>“W”字符：指定离给定日期最近的工作日(周一到周五)<br>“#”字符：表示该月第几个周X。6#3表示该月第3个周五</li>
+</ul>
+
       
     </div>
     
@@ -371,8 +390,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/21/design/singleton-page/" rel="next" title="设计模式之单例模式">
-                <i class="fa fa-chevron-left"></i> 设计模式之单例模式
+              <a href="/2019/12/21/principle/singleton-page/" rel="next" title="设计原则之单一职责原则">
+                <i class="fa fa-chevron-left"></i> 设计原则之单一职责原则
               </a>
             
           </div>
@@ -381,8 +400,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/12/21/principle/singleton-page/" rel="prev" title="设计原则之单一职责原则">
-                设计原则之单一职责原则 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/12/28/design/strategy-page/" rel="prev" title="设计模式之策略模式">
+                设计模式之策略模式 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -435,8 +454,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -496,6 +524,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cron-表达式"><span class="nav-number">1.</span> <span class="nav-text">Cron 表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cron表达式范例"><span class="nav-number">2.</span> <span class="nav-text">Cron表达式范例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cron表达式可选的值"><span class="nav-number">3.</span> <span class="nav-text">Cron表达式可选的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cron中的符号"><span class="nav-number">4.</span> <span class="nav-text">Cron中的符号</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
